@@ -1,0 +1,15 @@
+<form [formGroup]="myForm" (ngSubmit)="submit()">
+  <label>Firstname:</label>
+  <input type="text" formControlName="firstname">
+
+  <label>Lastname:</label>
+  <input type="text" formControlName="lastname">
+
+  <button type="submit">Submit</button>
+
+  <p *ngIf="myForm.controls.firstname.errors">
+    First name required!
+  </p>
+</form>
+
+<button (click)="signOutClick()">sign out</button>

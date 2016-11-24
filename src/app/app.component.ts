@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { DatastoreService } from './datastore.service'
+import { AuthService } from './auth.service'
 
 @Component({
   selector: 'app-root',
@@ -6,5 +8,6 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'app works!';
+  title = 'form test';
+  constructor() { }
 }
