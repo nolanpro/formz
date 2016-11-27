@@ -15,6 +15,7 @@ class UnauthGuard implements CanActivate {
   constructor(private auth: AuthService, private router: Router) {}
   canActivate(): Observable<boolean> {
     return this.auth.auth$.map(authState => !authState).do(notLoggedIn => {
+      console.log("GOT AUTH CHANGE. not logged in:", notLoggedIn)
       if (!notLoggedIn) {
         console.log("ALREADY LOGGED IN, REDIRECTING TO ROOT")
         this.router.navigate(['/']);

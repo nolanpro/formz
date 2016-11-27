@@ -12,4 +12,4 @@
   </p>
 </form>
 
-<button (click)="signOutClick()">sign out</button>
+<a *ngIf="auth.isLoggedIn" (click)="signOut.emit()" href="">sign out</a>

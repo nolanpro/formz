@@ -1,3 +1,4 @@
+// this module just sets up the connection for what I assume is the firebase global
 import { AngularFireModule, AuthMethods } from 'angularfire2';
 
 const firebaseConfig = {

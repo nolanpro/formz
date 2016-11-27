@@ -1,8 +1,11 @@
 <app-form
   (createPerson)="datastore.createPerson($event)"
   (signOut)="auth.signOut()"
+  [auth]="auth"
 ></app-form>
 
 <br />
 <br />
-List of people here.....
+<ul *ngFor="let person of datastore.people | async">
+  <li>Person: {{ person.firstname }} {{ person.lastname }}
+</ul>

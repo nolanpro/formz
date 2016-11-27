@@ -2,24 +2,28 @@ import { Injectable, OnInit } from '@angular/core';
 import { AuthProviders, AuthMethods, FirebaseAuth, FirebaseAuthState } from 'angularfire2';
 
 @Injectable()
-export class AuthService implements OnInit {
+export class AuthService {
   private authState: FirebaseAuthState = null;
 
-  constructor(public auth$: FirebaseAuth) { }
+  constructor(public auth$: FirebaseAuth) {
+    this.onInit();
+  }
 
-  ngOnInit() {
+  onInit() {
     this.auth$.subscribe((state: FirebaseAuthState) => {
       this.authState = state;
-      console.log('Subscription Auth State:', this.authState);
     });
   }
 
   signOut(): void {
-    console.log("SIGNING OUT!!");
     this.auth$.logout();
   }
 
-  id(): string {
+  get isLoggedIn(): boolean {
+    return !!this.authState;
+  }
+
+  get id(): string {
     return this.authState ? this.authState.uid : '';
   }
 

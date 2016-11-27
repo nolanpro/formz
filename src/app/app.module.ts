@@ -24,9 +24,11 @@ import 'rxjs/add/operator/take';
 class AuthGuard implements CanActivate {
   constructor(private auth: AuthService, private router: Router) {}
   canActivate(): Observable<boolean> {
+    console.log("CHECKING CAN ACTIVATE");
     // map: converts Observable<FirebaseAuthState> to Observable<bool> for return val
     // on: tag on some work when observable resolves (in this case, redirect to login page)
     return this.auth.auth$.map(authState => !!authState).do(authState => {
+      console.log("AUTH STATE CHANGED. IS LOGGED IN:", authState)
       if (!authState) {
         console.log("NOT LOGGED IN, REDIRECTING")
         this.router.navigate(['/login']);

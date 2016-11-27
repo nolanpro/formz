@@ -1,5 +1,6 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms'
+import { AuthService } from '../auth.service'
 
 @Component({
   selector: 'app-form',
@@ -10,6 +11,7 @@ export class FormComponent implements OnInit {
 
   @Output() createPerson = new EventEmitter();
   @Output() signOut = new EventEmitter();
+  @Input() auth: AuthService;
 
   myForm: FormGroup;
 
@@ -20,11 +22,6 @@ export class FormComponent implements OnInit {
       firstname: ['', Validators.required],
       lastname: ['']
     })
-  }
-
-  signOutClick() {
-    console.log("EMITTING SIGNOUT")
-    this.signOut.emit();
   }
 
   submit(): void {
