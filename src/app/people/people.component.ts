@@ -17,8 +17,17 @@ export class PeopleComponent implements OnInit {
   constructor(
     public auth: AuthService,
     public datastore: DatastoreService,
-    private router: Router) { }
+    public router: Router) {
+      this.auth.auth$.subscribe(authState => {
+        // WHY NO ROUTER HERE???
+      });
+    }
 
   ngOnInit() {
+  }
+
+  doSignOut($event): void {
+    $event.preventDefault();
+    this.auth.signOut();
   }
 }
