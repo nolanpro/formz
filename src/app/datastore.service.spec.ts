@@ -3,7 +3,7 @@
 import { TestBed, async, inject } from '@angular/core/testing';
 import { DatastoreService } from './datastore.service';
 
-import { AuthService } from './auth.service';
+import { AppModule } from './app.module';
 import { AngularFire, FirebaseListObservable } from 'angularfire2';
 
 describe('DatastoreService', () => {
@@ -12,10 +12,7 @@ describe('DatastoreService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-        providers: [
-          {provide: AngularFire, useValue: MockAngularFire },
-          {provide: AuthService, useValue: MockAuthService },
-        ]
+        imports: [ AppModule ],
       });
   });
 

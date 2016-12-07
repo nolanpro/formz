@@ -13,4 +13,4 @@
 </form>
 
 <!-- <a *ngIf="auth.isLoggedIn" (click)="signOut.emit()" href="">sign out</a> -->
-<a *ngIf="auth.isLoggedIn" (click)="signOut.emit($event)" href="#">sign out</a>
+<a class="signout-link" *ngIf="auth.isLoggedIn" (click)="signOut.emit($event)" href="#">sign out</a>

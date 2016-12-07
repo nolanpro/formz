@@ -4,6 +4,7 @@ import { DatastoreService } from '../datastore.service';
 import { FirebaseListObservable } from 'angularfire2';
 import { IPerson } from '../models/person.model'
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'app-people',
@@ -11,19 +12,28 @@ import { Router } from '@angular/router';
   styleUrls: ['./people.component.css']
 })
 export class PeopleComponent implements OnInit {
-  // [tasks]="taskService.visibleTasks$"
-  // @Input() people$: FirebaseListObservable<IPerson[]>;
+  subscription: Subscription;
 
   constructor(
     public auth: AuthService,
     public datastore: DatastoreService,
-    public router: Router) {
-      this.auth.auth$.subscribe(authState => {
-        // WHY NO ROUTER HERE???
-      });
-    }
+    public router: Router) { }
 
   ngOnInit() {
+    this.subscription = this.auth.auth$.subscribe(authState => {
+      if (!authState) {
+        this.router.navigate(['login']);
+      }
+    });
+  }
+
+  get testfunc() {
+    return this.auth.auth$;
+  }
+
+  ngOnDestroy() {
+    debugger;
+    this.subscription.unsubscribe();
   }
 
   doSignOut($event): void {

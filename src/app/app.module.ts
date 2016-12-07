@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, Injectable } from '@angular/core';
+import { APP_BASE_HREF } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { FirebaseModule } from './firebase/firebase.module'
@@ -57,7 +58,12 @@ const routes: Routes = [
     LoginModule,
     RouterModule.forRoot(routes),
   ],
-  providers: [ DatastoreService, AuthGuard, AuthService ],
+  providers: [
+    DatastoreService,
+    AuthGuard,
+    AuthService,
+    {provide: APP_BASE_HREF, useValue : '/' }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

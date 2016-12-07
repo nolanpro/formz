@@ -1,11 +1,11 @@
 <app-form
   (createPerson)="datastore.createPerson($event)"
   (signOut)="doSignOut($event)"
-  [auth]="auth"
 ></app-form>
 
 <br />
 <br />
+<p>Hi</p>
 <ul *ngIf="auth.isLoggedIn">
   <li *ngFor="let person of datastore.people | async">Person: {{ person.firstname }} {{ person.lastname }}
 </ul>

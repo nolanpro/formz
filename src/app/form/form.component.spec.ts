@@ -2,7 +2,13 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { FormComponent } from './form.component';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AppModule } from '../app.module';
+
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+
+import {
+    RouterTestingModule
+} from '@angular/router/testing';
 
 describe('FormComponent', () => {
   let component: FormComponent;
@@ -10,8 +16,8 @@ describe('FormComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ FormComponent ],
-      imports: [ FormsModule, ReactiveFormsModule ]
+      imports: [ AppModule, RouterTestingModule ],
+      schemas: [ NO_ERRORS_SCHEMA ],
     })
     .compileComponents();
   }));
