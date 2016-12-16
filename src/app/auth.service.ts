@@ -4,6 +4,7 @@ import { AuthProviders, AuthMethods, FirebaseAuth, FirebaseAuthState } from 'ang
 @Injectable()
 export class AuthService {
   private authState: FirebaseAuthState = null;
+  public isLoggedIn: Boolean = false;
 
   constructor(public auth$: FirebaseAuth) {
     this.onInit();
@@ -12,15 +13,12 @@ export class AuthService {
   onInit() {
     this.auth$.subscribe((state: FirebaseAuthState) => {
       this.authState = state;
+      this.isLoggedIn = !!state;
     });
   }
 
   signOut(): void {
     this.auth$.logout();
-  }
-
-  get isLoggedIn(): boolean {
-    return !!this.authState;
   }
 
   get id(): string {

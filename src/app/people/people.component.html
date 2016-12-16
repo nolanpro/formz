@@ -6,6 +6,6 @@
 <br />
 <br />
 <p>Hi</p>
-<ul *ngIf="auth.isLoggedIn">
-  <li *ngFor="let person of datastore.people | async">Person: {{ person.firstname }} {{ person.lastname }}
+<ul class="people-list" *ngIf="auth.isLoggedIn">
+  <li *ngFor="let person of datastore.people$ | async">Person: {{ person.firstname }} {{ person.lastname }}
 </ul>

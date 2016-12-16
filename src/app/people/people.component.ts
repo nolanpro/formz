@@ -20,11 +20,13 @@ export class PeopleComponent implements OnInit {
     public router: Router) { }
 
   ngOnInit() {
-    this.subscription = this.auth.auth$.subscribe(authState => {
-      if (!authState) {
-        this.router.navigate(['login']);
-      }
-    });
+    if (this.auth.auth$) {
+      this.subscription = this.auth.auth$.subscribe(authState => {
+        if (!authState) {
+          this.router.navigate(['login']);
+        }
+      });
+    }
   }
 
   get testfunc() {
@@ -32,7 +34,6 @@ export class PeopleComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    debugger;
     this.subscription.unsubscribe();
   }
 

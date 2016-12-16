@@ -12,7 +12,7 @@ export class DatastoreService {
     this.onInit();
   }
 
-  private people$: FirebaseListObservable<IPerson[]>;
+  public people$: FirebaseListObservable<IPerson[]>;
 
   onInit() {
     var path = `/formz/${this.auth.id}`;

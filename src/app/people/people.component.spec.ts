@@ -5,36 +5,46 @@ import { PeopleComponent } from './people.component';
 import { AuthService } from '../auth.service';
 import { AppModule } from '../app.module'
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { Subject } from 'rxjs/Subject';
+import { Observable } from 'rxjs/Rx';
+import { AuthProviders, FirebaseAuth, FirebaseAuthState } from 'angularfire2';
+import { DatastoreService } from '../datastore.service';
+import { IPerson } from '../models/person.model'
 
 import {
     RouterTestingModule
 } from '@angular/router/testing';
 
-
 describe('PeopleComponent', () => {
   let component: PeopleComponent;
   let fixture: ComponentFixture<PeopleComponent>;
   let mockRouter;
-  let mockAuthService;
   let mockFirebaseAuth;
-  let mockSubscription;
+  let mockDatastore;
+  let authSubject;
+  let people$;
+  let person: IPerson = { firstname: 'foo', lastname: 'bar', createdAt: 123 };
 
   beforeEach(async(() => {
+    authSubject = new Subject<FirebaseAuthState>();
     mockRouter = jasmine.createSpyObj('Router', ['navigate']);
-    mockFirebaseAuth = jasmine.createSpyObj('FirebaseAuth', ['subscribe']);
-    mockSubscription = jasmine.createSpyObj('subscription', ['unsubscribe']);
-    mockFirebaseAuth.subscribe.and.returnValue(mockSubscription);
+    mockFirebaseAuth = jasmine.createSpyObj('fbAuth', ['subscribe', 'logout']);
+    mockFirebaseAuth.subscribe.and.callFake(callback => {
+      return authSubject.subscribe(callback);
+    });
+    mockFirebaseAuth.logout.and.callFake(() => {
+      authSubject.next(null);
+    });
 
-    mockAuthService =
-      jasmine.createSpyObj('AuthService', ['isLoggedIn', 'signOut', 'auth$']);
-    mockAuthService.isLoggedIn.and.returnValue(true);
-    mockAuthService.auth$.and.returnValue(mockFirebaseAuth)
-    mockFirebaseAuth.subscribe.and.returnValue(mockSubscription)
+    mockDatastore = {};
+    people$ = Observable.of([person]);
+    mockDatastore.people$ = people$;
 
     TestBed.configureTestingModule({
       providers: [
         { provide: Router, useValue: mockRouter },
-        { provide: AuthService, useValue: mockAuthService },
+        { provide: FirebaseAuth, useValue: mockFirebaseAuth },
+        { provide: DatastoreService, useValue: mockDatastore },
       ],
       imports: [ AppModule, RouterTestingModule ],
     }).compileComponents();
@@ -50,8 +60,19 @@ describe('PeopleComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('redirects to the login page after signout', () => {
+  it('redirects to the login page after signout', async(() => {
+    let authData = { uid: '123' } as FirebaseAuthState;
+    authSubject.next(authData);
     fixture.nativeElement.querySelectorAll('.signout-link')[0].click();
     expect(mockRouter.navigate).toHaveBeenCalledWith(['login']);
-  });
+  }));
+
+  it('lists the people', async(() => {
+    let authData = { uid: '123' } as FirebaseAuthState;
+    authSubject.next(authData);
+    fixture.detectChanges();
+    expect(
+      fixture.nativeElement.querySelectorAll('.people-list li')[0].innerHTML.trim()
+    ).toEqual('Person: foo bar');
+  }));
 });
