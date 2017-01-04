@@ -16,18 +16,15 @@ export class DatastoreService {
 
   onInit() {
     var path = `/formz/${this.auth.id}`;
-    console.log("PATH:", path)
     this.people$ = this.af.database.list(path);
   }
 
   createPerson(form): firebase.Promise<any> {
-    console.log("GOT EVENT", form)
     var person: IPerson = {
       firstname: form.firstname,
       lastname: form.lastname,
       createdAt: firebase.database['ServerValue']['TIMESTAMP']
     }
-    console.log("PUSHING PERSON TO FB", person)
     return this.people$.push(person);
   }
 
